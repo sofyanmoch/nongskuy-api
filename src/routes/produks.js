@@ -13,6 +13,7 @@ const router = express.Router()
 
 router
 .get('/getall',  authentication, authorization,redis.getAll, produksControllers.getAll)
+.get('/getall', authentication, authorization, redis.getAll, produksControllers.getAll)
 .get('/getdetail/:id_produks', authentication, authorization,produksControllers.getDetail)
 .post('/add',authentication, authorization, produksControllers.addProduk)
 .put('/edit/:id_produks',upload.single('image'), authentication, authorization,produksControllers.update)
