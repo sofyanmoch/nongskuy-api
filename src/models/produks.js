@@ -29,7 +29,11 @@ const produks = {
     },
     addProduk: (data) => {
     return new Promise((resolve,reject)=>{
-            db.query(`insert into produk (name,price,image,category_id)values('${data.name}','${data.price}','${data.image}','${data.category_id}')`,(err,result)=>{
+            db.query(`insert into produk (name,price,image,category_id)values(
+                '${data.name}',
+                '${data.price}',
+                '${data.image}',
+                '${data.category_id}')`,(err,result)=>{
                 err ? reject(new Error(err)) : resolve(result)
             })
         })
@@ -92,7 +96,7 @@ const produks = {
             })
          })
     },
-delete: (id) => {
+    delete: (id) => {
         return new Promise((resolve,reject)=>{
                 db.query(`SELECT * FROM produk where id = ${id}`,(err,result)=>{
                     if(err){

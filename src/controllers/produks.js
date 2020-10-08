@@ -51,7 +51,7 @@ const produks = {
                 }
                 else{
                     const body = req.body
-        body.image = req.file.filename
+        body.image = !req.file?req.file:req.file.filename
         produksModel.addProduk(body)
         .then((result)=>{
             redisClient.del('produks')
@@ -113,3 +113,47 @@ const produks = {
 }
 
 module.exports = produks
+
+// 
+// const airlinesModel = require('../../model/airlines')
+// const response = require('../../helper/response')
+
+// const airlines = {
+//     dataAll: (req,res) => {
+//         try {
+//             const sortby = !req.query.sortby?'id':req.query.sortby
+//             const type = !req.query.type?'ASC': req.query.type
+//             const name = !req.query.name?'':req.query.name
+//             const limit = !req.query.limit?7:req.query.limit
+//             airlinesModel.dataAll().then((result)=>{
+//                 response.success(res,result,"Get airlines success")
+//             })
+//         } catch {
+//             response.failed(res,[],'Internal server error')
+//         }
+
+        
+//     }
+// }
+
+// module.exports = airlines
+//
+
+// model
+// const db = require('.././config/database')
+
+// const airlines = {
+//     dataAll: () => {
+//         return new Promise((resolve,reject)=> {
+//             db.query(`SELECT * from airlines`,(err,result)=>{
+//                 if(err){
+//                     reject(new Error(err))
+//                 }else{
+//                     resolve(result)
+//                 }
+//             })
+//         })
+//     }
+// }
+
+// module.exports = airlines
