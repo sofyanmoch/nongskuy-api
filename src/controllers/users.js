@@ -3,6 +3,7 @@ const {success,failed,tokenResult} = require('../helpers/response')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { secretKey } = require('../helpers/env')
+const { getEmail } = require('../models/users')
 const users = {
     register: async(req,res) => {
         try{
@@ -13,10 +14,15 @@ const users = {
             email: body.email,
             password: hashPw
         }
+        const email = await getEmail(data.email)
+        if(email.length > 0) {
+            failed(res,[],'Email already exist')
+        } else {
         usersModel.register(data)
         .then((result)=>{
             tokenResult(res,result,"Register Success")
         })
+    }
     } catch (err){
         failed(res,[],err.message)
     }
@@ -27,7 +33,12 @@ const users = {
         usersModel.login(body)
         .then(async(result)=>{
             const results = result[0]
+            if(!results){
+                failed(res,[],'Email Not Registered')
+            } else {
+            const id = results.id
             const password = results.password
+            const email = results.email
             const isMatch = await bcrypt.compare(body.password,password)
             if(isMatch){
                 jwt.sign({
@@ -56,8 +67,9 @@ const users = {
             )
 
             }else{
-                failed(res,[], 'Email atau password salah') 
+                failed(res,[], 'Wrong Password') 
             }
+        }
         })
     } catch (err){
         failed(res,[],err.message)
