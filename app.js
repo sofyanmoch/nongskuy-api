@@ -18,13 +18,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 const { port }  = require('./src/helpers/env')
 app.use(cors())
 
-app.use('*',(req,res) => {
-    res.sendFile(__dirname, './dist/index.html')
-})
+// app.use('*',(req,res) => {
+//     res.sendFile(__dirname, './dist/index.html')
+// })
 
-app.get('/*', (req,res) => {
-    res.sendFile(path.join(__dirname, './dist/index.html'))
-})
+// app.get('/*', (req,res) => {
+//     res.sendFile(path.join(__dirname, './dist/index.html'))
+// })
 
 
 app.use('/',routerNavigation)
