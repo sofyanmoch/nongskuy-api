@@ -13,7 +13,7 @@ const sendMail =  {
             requireTLS: true,
             auth: {
               user: 'mochsofyannn@gmail.com',
-              pass: ''
+              pass: '@Daop7900'
             }
           });
           
