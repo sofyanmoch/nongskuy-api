@@ -19,11 +19,11 @@ const response = {
     },
     sucessWithMeta: (res, data, meta, message)=>{
         const result = {
-            message : message,
+            message,
             success : true,
             code : 200,
-            meta : meta,
-            data : data,
+            meta,
+            data,
         }
         res.json(result)
     },

@@ -67,7 +67,7 @@ const produks = {
         try {
         const data = req.body
         const id = req.params.id_produks
-        data.image = req.file.filename
+        data.image = !req.file?req.file:req.file.filename
         produksModel.update(data,id)
         .then((result)=>{
             redisClient.del('produks')
@@ -81,12 +81,7 @@ const produks = {
         try{
         const data = req.body
         const id = req.params.id_produks
-        data.image = req.file.filename
-
-        // if(data.image === ""){
-        //     data.image === imgOld
-        // }
-
+        data.image = !req.file?req.file:req.file.filename
         produksModel.updPatch(data,id)
         .then((result)=>{
             redisClient.del('produks')

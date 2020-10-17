@@ -13,13 +13,13 @@ const produks = {
             })
         })
     },
-    // getCount: () => {
-    //     return new Promise((resolve,reject)=>{
-    //         db.query(`SELECT COUNT (*) from produk`,(err,result) => {
-    //             !err? reject(new Error(err)):resolve(result)
-    //         })
-    //     })
-    // },
+    getAllData: () => {
+        return new Promise((resolve,reject)=>{
+            db.query(`SELECT *, (SELECT COUNT (*) from produk) as count from produk`,(err,result) => {
+                !err? reject(new Error(err)):resolve(result)
+            })
+        })
+    },
     getDetail: (id) => {
         return new Promise((resolve,reject)=>{
             db.query(`SELECT produk.id , produk.name , produk.price , categories.category_name ,produk.image FROM produk INNER JOIN categories ON produk.category_id = categories.id WHERE produk.id = '${id}'`,(err,result) => {

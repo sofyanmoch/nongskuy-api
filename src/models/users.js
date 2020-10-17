@@ -8,6 +8,17 @@ const users = {
             })
         })
     },
+    update: (email) => {
+        return new Promise((resolve, reject)=>{
+            db.query(`UPDATE users SET user_status = 1 WHERE email = '${email}'`,(err,result)=>{
+                if(err){
+                    reject(new Error(err))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
     login: (data) => {
         return new Promise((resolve,reject)=>{
                 db.query(`SELECT * from users where email = ?`, data.email,(err,result)=>{

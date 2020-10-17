@@ -2,8 +2,13 @@ const usersModel = require('../models/users')
 const {success,failed,tokenResult} = require('../helpers/response')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const env = require('../helpers/env')
 const { secretKey } = require('../helpers/env')
 const { getEmail } = require('../models/users')
+const nodemailer = require('nodemailer')
+const {emailSend} = require('../helpers/Mail')
+// const sendMail  = require('../helpers/Mail')
+
 const users = {
     register: async(req,res) => {
         try{
@@ -18,14 +23,43 @@ const users = {
         if(email.length > 0) {
             failed(res,[],'Email already exist')
         } else {
-        usersModel.register(data)
+        await usersModel.register(data)
         .then((result)=>{
-            tokenResult(res,result,"Register Success")
+            tokenResult(res,result,"Register Success Please checky your email to activation")
+            const token = jwt.sign({email: body.email}, env.secretKey)
+            emailSend(data.email,token)
+        }).catch((err)=>{
+            failed(res,[],err.message)
         })
     }
     } catch (err){
         failed(res,[],err.message)
     }
+    },
+    verify: async(req,res) => {
+            const token = req.params.token
+            if(token){
+                jwt.verify(token, secretKey, async (err,decode)=>{
+                    if(err) {
+                        failed(res,[],err.message)
+                    } else {
+                        try {
+                            const data = jwt.decode(token)
+                            const email = data.email
+                            const result = await usersModel.update(email)
+                            if(result){
+                                res.render("verify/email")
+                            } else {
+                                res.json({
+                                    message: 'error Activated'
+                                })
+                            }
+                        } catch (err) {
+                            failed(res, [], err.message)
+                        }
+                    }
+                })
+            }
     },
     login: async(req,res) => {
         try{
@@ -35,7 +69,11 @@ const users = {
             const results = result[0]
             if(!results){
                 failed(res,[],'Email Not Registered')
-            } else {
+            }
+            else if (results.user_status === 0) {
+                failed(res,[],'Please Activate Email First')
+            }
+            else {
             const id = results.id
             const password = results.password
             const email = results.email
