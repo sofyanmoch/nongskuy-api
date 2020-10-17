@@ -10,7 +10,6 @@ const path = require('path')
 app.set('views', path.join(__dirname,'src/views'))
 app.set('view engine', 'ejs')
 
-app.use(express.static(path.join(__dirname, './dist')))
 app.use(express.static('asset/img/'))
 app.use(express.static('src/views'))
 app.use(bodyParser.json())
@@ -18,13 +17,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 const { port }  = require('./src/helpers/env')
 app.use(cors())
 
-app.use('*',(req,res) => {
-    res.sendFile(__dirname, './dist/index.html')
-})
+// app.use(express.static(path.join(__dirname, './dist')))
+// app.use('*',(req,res) => {
+//     res.sendFile(__dirname, './dist/index.html')
+// })
 
-app.get('/*', (req,res) => {
-    res.sendFile(path.join(__dirname, './dist/index.html'))
-})
+// app.get('/*', (req,res) => {
+//     res.sendFile(path.join(__dirname, './dist/index.html'))
+// })
 
 
 app.use('/',routerNavigation)
