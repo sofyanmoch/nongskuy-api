@@ -1,6 +1,11 @@
 # backend-Food-App
-This is my first rest API, food app api is a restful api designed to store Product data and Transactions. This API already uses JWT Redis authentication and authorization.
-This Rest API already uses JWT, redis and Multer to validate the size and file extension. This application is still under development, if there are suggestions and criticism I am very happy to receive it
+This is my first rest API, food app api is a restful api designed to store Product data and Transactions.
+if there are suggestions and criticism I am very happy to receive it
+Module :
+- Multer
+- bcrypt
+- JWT
+- nodemailer
 
 
 POSTMAN DOCUMENTATION
